@@ -1,9 +1,0 @@
-version: '3.8'
-
-services:
-  nginx:
-    build: .
-    ports:
-      - "8080:80"
-    restart: unless-stopped
-    container_name: nginx-container
