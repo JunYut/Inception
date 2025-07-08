@@ -13,7 +13,12 @@ docker run -d -p <host-port>:<container-port> <image-name>
 docker run -d -p <host-port>:<container-port> -v <host-path>:<container-path>:<permission> <image-name>
 ```
 
-# Run container with shell
+# Start container with a terminal and removes container when it exits
 ```bash
 docker run -it --rm <image-name>
+```
+
+# Opens interactive shell in a running container
+```bash
+docker exec -it <container_name_or_id> sh
 ```

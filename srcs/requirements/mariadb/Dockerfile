@@ -3,6 +3,9 @@ FROM alpine:3.21.3
 RUN apk add --no-cache mariadb mariadb-client && \
 	mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
+RUN mkdir -p /run/mysqld && \
+	chown mysql:mysql /run/mysqld
+
 RUN chown -R mysql:mysql /var/lib/mysql
 
 USER mysql
