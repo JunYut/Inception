@@ -4,7 +4,7 @@ RUN apt update && \
     apt install -y php-fpm php-mysql php-curl php-xml php-mbstring php-zip \
     php-gd unzip wget
 
-RUN which php-fpm || which php-fpm7.4
+RUN mkdir -p /run/php
 
 RUN mkdir -p /var/www && \
     cd /var/www && \
