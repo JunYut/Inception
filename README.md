@@ -22,3 +22,8 @@ docker run -it --rm <image-name>
 ```bash
 docker exec -it <container_name_or_id> sh
 ```
+
+# Stop container
+```bash
+docker stop <container_name_or_id>
+```
