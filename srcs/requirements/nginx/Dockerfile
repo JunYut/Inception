@@ -1,7 +1,8 @@
-FROM alpine:3.21.3
+FROM debian:bullseye
 
-RUN apk add --no-cache nginx && \
-	mkdir -p /run/nginx
+RUN apt update && \
+    apt install -y nginx && \
+    mkdir -p /run/nginx
 
 EXPOSE 80
 
