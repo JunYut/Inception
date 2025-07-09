@@ -1,35 +1,19 @@
-FROM alpine:3.21.3
+FROM debian:bullseye
 
-# Install PHP, PHP-FPM, and required extensions
-RUN apk add --no-cache \
-    php82 php82-fpm php82-mysqli php82-json php82-session php82-gd php82-curl php82-xml \
-    php82-mbstring php82-zip php82-dom php82-opcache curl unzip
+RUN apt update && \
+    apt install -y php-fpm php-mysql php-curl php-xml php-mbstring php-zip \
+    php-gd unzip wget
 
-# Create a user and group for running WordPress
-RUN addgroup -S www && adduser -S www -G www
+RUN which php-fpm || which php-fpm7.4
 
-# Prepare the web root && log directory
-RUN mkdir -p /var/www && chown www:www /var/www && \
-	mkdir -p /var/log/php82 && chown www:www /var/log/php82
-
-# Download and extract WordPress
-USER www
-RUN curl -o /tmp/wordpress.zip https://wordpress.org/latest.zip && \
-    unzip /tmp/wordpress.zip -d /var/www/ && \
-    rm /tmp/wordpress.zip
-
-USER root
-
-# Set permissions
-RUN chown -R www:www /var/www/wordpress
-
-# Configure PHP-FPM to listen on all interfaces (for Nginx to connect)
-RUN sed -i 's|^listen = .*|listen = 0.0.0.0:9000|' /etc/php82/php-fpm.d/www.conf && \
-    sed -i 's|^user = .*|user = www|' /etc/php82/php-fpm.d/www.conf && \
-    sed -i 's|^group = .*|group = www|' /etc/php82/php-fpm.d/www.conf
-
-USER www
+RUN mkdir -p /var/www && \
+    cd /var/www && \
+    wget https://wordpress.org/latest.zip && \
+    unzip latest.zip && \
+    mv wordpress mysite && \
+    chown -R www-data:www-data mysite && \
+    chmod -R 755 mysite
 
 EXPOSE 9000
 
-CMD ["/usr/sbin/php-fpm82", "-F"]
+CMD [ "php-fpm7.4", "-F" ]
