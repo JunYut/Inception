@@ -10,9 +10,8 @@ RUN mkdir -p /var/www && \
     cd /var/www && \
     wget https://wordpress.org/latest.zip && \
     unzip latest.zip && \
-    mv wordpress mysite && \
-    chown -R www-data:www-data mysite && \
-    chmod -R 755 mysite
+    chown -R www-data:www-data wordpress && \
+    chmod -R 755 wordpress
 
 EXPOSE 9000
 
