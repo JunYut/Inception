@@ -20,8 +20,8 @@ RUN mkdir -p /var/www && \
     rm latest.zip
 
 # only allows php-fpm to access wordpress/ (php-fpm runs as www-data user)
-RUN chown -R www-data:www-data wordpress && \
-    chmod -R 755 wordpress && \
+RUN chown -R www-data:www-data /var/www/wordpress && \
+    chmod -R 755 /var/www/wordpress && \
     chown -R www-data:www-data /run/php
 
 # switch to non-root user for security
