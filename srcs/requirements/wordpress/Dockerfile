@@ -10,7 +10,7 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # runtime directory for process ID files and socket files
-RUN mkdir -p /run/php
+RUN mkdir -p /run/php /var/log
 
 # install wordpress
 RUN mkdir -p /var/www && \
@@ -19,10 +19,13 @@ RUN mkdir -p /var/www && \
     unzip latest.zip && \
     rm latest.zip
 
+# copy configs from host
+# COPY wp-config.php var/www/wordpress
+COPY www.conf /etc/php/7.4/fpm/pool.d/www.conf
+
 # only allows php-fpm to access wordpress/ (php-fpm runs as www-data user)
-RUN chown -R www-data:www-data /var/www/wordpress && \
-    chmod -R 755 /var/www/wordpress && \
-    chown -R www-data:www-data /run/php
+RUN chown -R www-data:www-data /var/www/wordpress /run/php /var/log && \
+    chmod -R 755 /var/www/wordpress
 
 # switch to non-root user for security
 USER www-data
