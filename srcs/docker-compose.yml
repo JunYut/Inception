@@ -1,7 +1,7 @@
 services:
   nginx:
-    # image: srcs-nginx
-    build: ./requirements/nginx
+    image: srcs-nginx
+    # build: ./requirements/nginx
     ports:
       - "8080:80"
   wordpress:
@@ -9,3 +9,8 @@ services:
     build: ./requirements/wordpress
     ports:
       - "9000"
+  mariadb:
+    # image: srcs-mariadb
+    build: ./requirements/mariadb
+    ports:
+      - "3306"

@@ -11,7 +11,7 @@ RUN mkdir -p /run/nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # set ownership for runtime directory
-RUN chown -R www-data:www-data /run/nginx
+RUN chown -R www-data:www-data /run/nginx /var/lib/nginx /var/log/nginx
 
 # switch to non-root user for security
 USER www-data
