@@ -1,0 +1,43 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# Docker files (don't copy into build context)
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+
+# Build artifacts
+*.o
+*.so
+*.dylib
+*.exe
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.sublime-*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node.js (if you have any)
+node_modules/
+npm-debug.log
+
+# Python (if you have any)
+__pycache__/
+*.pyc
+*.pyo
