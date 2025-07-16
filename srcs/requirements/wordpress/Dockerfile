@@ -20,7 +20,7 @@ RUN mkdir -p /var/www && \
     rm latest.zip
 
 # copy configs from host
-# COPY wp-config.php var/www/wordpress
+COPY wp-config.php var/www/wordpress
 COPY www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
 # only allows php-fpm to access wordpress/ (php-fpm runs as www-data user)
