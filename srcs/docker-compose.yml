@@ -5,6 +5,8 @@ services:
     ports:
       - "8080:80"
   wordpress:
+    depends_on:
+      - mariadb
     # image: srcs-wordpress
     build: ./requirements/wordpress
     ports:
