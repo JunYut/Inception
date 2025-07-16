@@ -20,6 +20,9 @@ RUN mkdir -p /run/mysqld && \
 RUN mkdir -p /docker-entrypoint-initdb.d/
 COPY setup.sql /docker-entrypoint-initdb.d/
 
+# copy MariaDB configuration
+COPY mariadb.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+
 # copy start up script
 COPY init.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/init.sh
