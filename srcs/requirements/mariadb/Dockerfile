@@ -16,9 +16,17 @@ RUN mkdir -p /run/mysqld && \
     chown mysql:mysql /run/mysqld && \
     chown -R mysql:mysql /var/lib/mysql
 
+# create directory for SQL scripts and copy
+RUN mkdir -p /docker-entrypoint-initdb.d/
+COPY setup.sql /docker-entrypoint-initdb.d/
+
+# copy start up script
+COPY init.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/init.sh
+
 # runs with minimal permissions
 USER mysql
 
 EXPOSE 3306
 
-CMD ["mariadbd", "--datadir=/var/lib/mysql"]
+CMD ["/usr/local/bin/init.sh"]
