@@ -2,19 +2,27 @@ services:
   nginx:
     build: ./requirements/nginx
     image: srcs-nginx
-    ports:
-      - "8080:80"
     depends_on:
       - wordpress
+    ports:
+      - "8080:80"
+    # volumes:
+    #   - /home/$USER/data/wordpress:/var/www/wordpress
+
   wordpress:
-    depends_on:
-      - mariadb
     build: ./requirements/wordpress
     image: srcs-wordpress
+    depends_on:
+      - mariadb
     ports:
       - "9000"
+    # volumes:
+    #   - /home/$USER/data/wordpress:/var/www/wordpress
+
   mariadb:
     build: ./requirements/mariadb
     image: srcs-mariadb
     ports:
       - "3306"
+    # volumes:
+    #   - /home/$USER/data/mariadb:/var/lib/mysql

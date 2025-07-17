@@ -11,7 +11,7 @@ all: build run
 # Build all Docker images
 build:
 	@echo "Building Docker images..."
-	$(COMPOSE_CMD) build --no-cache
+	$(COMPOSE_CMD) build
 
 # Start all services
 run:
