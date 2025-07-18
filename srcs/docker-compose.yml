@@ -6,8 +6,8 @@ services:
       - wordpress
     ports:
       - "8080:80"
-    # volumes:
-    #   - /home/bazzite/data/wordpress:/var/www/wordpress
+    volumes:
+      - wordpress_data:/var/www/html
 
   wordpress:
     build: ./requirements/wordpress
@@ -16,8 +16,8 @@ services:
       - mariadb
     ports:
       - "9000"
-    # volumes:
-    #   - /home/bazzite/data/wordpress:/var/www/wordpress/wp-content
+    volumes:
+      - wordpress_data:/var/www/wordpress/
 
   mariadb:
     build: ./requirements/mariadb
