@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:80"
     # volumes:
-    #   - /home/$USER/data/wordpress:/var/www/wordpress
+    #   - /home/bazzite/data/wordpress:/var/www/wordpress
 
   wordpress:
     build: ./requirements/wordpress
@@ -17,12 +17,29 @@ services:
     ports:
       - "9000"
     # volumes:
-    #   - /home/$USER/data/wordpress:/var/www/wordpress
+    #   - /home/bazzite/data/wordpress:/var/www/wordpress/wp-content
 
   mariadb:
     build: ./requirements/mariadb
     image: srcs-mariadb
     ports:
       - "3306"
-    # volumes:
-    #   - /home/$USER/data/mariadb:/var/lib/mysql
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:
+    name: mariadb_data
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/bazzite/data/mariadb
+
+  wordpress_data:
+    name: wordpress_data
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/bazzite/data/wordpress
