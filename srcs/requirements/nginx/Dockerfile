@@ -7,6 +7,9 @@ RUN apt update && \
 # runtime directory for process ID files and temporary files
 RUN mkdir -p /run/nginx
 
+# create wordpress directory
+RUN mkdir -p /var/www/wordpress
+
 # copy config from host
 COPY nginx.conf /etc/nginx/nginx.conf
 

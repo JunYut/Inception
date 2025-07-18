@@ -1,5 +1,6 @@
 services:
   nginx:
+    container_name: nginx
     build: ./requirements/nginx
     image: srcs-nginx
     depends_on:
@@ -7,9 +8,10 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - wordpress_data:/var/www/html
+      - wordpress_data:/var/www/wordpress
 
   wordpress:
+    container_name: wordpress
     build: ./requirements/wordpress
     image: srcs-wordpress
     depends_on:
@@ -17,9 +19,10 @@ services:
     ports:
       - "9000"
     volumes:
-      - wordpress_data:/var/www/wordpress/
+      - wordpress_data:/var/www/wordpress
 
   mariadb:
+    container_name: mariadb
     build: ./requirements/mariadb
     image: srcs-mariadb
     ports:
