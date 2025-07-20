@@ -80,29 +80,29 @@ monitor:
 
 # Enter container shells
 shell-nginx:
-	docker exec -it srcs-nginx-1 /bin/bash
+	docker exec -it nginx /bin/bash
 
 shell-wordpress:
-	docker exec -it srcs-wordpress-1 /bin/bash
+	docker exec -it wordpress /bin/bash
 
 shell-mariadb:
-	docker exec -it srcs-mariadb-1 /bin/bash
+	docker exec -it mariadb /bin/bash
 
 # Database operations
 db-connect:
-	docker exec -it srcs-mariadb-1 mysql -u wp_user -p'pass' wordpress_db
+	docker exec -it mariadb mysql -u wp_user -p'pass' wordpress_db
 
 db-root:
-	docker exec -it srcs-mariadb-1 mysql -u root -p
+	docker exec -it mariadb mysql -u root -p
 
 # Development helpers
 dev-wordpress:
 	@echo "WordPress development mode..."
-	docker exec -it srcs-wordpress-1 tail -f /var/log/php7.4-fpm.log
+	docker exec -it wordpress tail -f /var/log/php7.4-fpm.log
 
 dev-nginx:
 	@echo "Nginx development mode..."
-	docker exec -it srcs-nginx-1 tail -f /var/log/nginx/access.log
+	docker exec -it nginx tail -f /var/log/nginx/access.log
 
 # Help target
 help:
