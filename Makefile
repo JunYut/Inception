@@ -10,6 +10,8 @@ all: build run
 
 # Build all Docker images
 build:
+	@echo "Creating volumes..."
+	mkdir -p ~/data/wordpress ~/data/mariadb
 	@echo "Building Docker images..."
 	$(COMPOSE_CMD) build
 
