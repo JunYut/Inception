@@ -18,13 +18,13 @@ RUN mkdir -p /run/mysqld && \
 
 # create directory for SQL scripts and copy
 RUN mkdir -p /docker-entrypoint-initdb.d/
-COPY setup.sql /docker-entrypoint-initdb.d/
+COPY tools/setup.sql /docker-entrypoint-initdb.d/
 
 # copy MariaDB configuration
-COPY mariadb.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY conf/mariadb.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 # copy start up script
-COPY init.sh /usr/local/bin/
+COPY tools/init.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/init.sh
 
 # runs with minimal permissions
