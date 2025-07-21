@@ -37,7 +37,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/bazzite/data/mariadb
+      device: /home/tjun-yu/data/mariadb
 
   wordpress_data:
     name: wordpress_data
@@ -45,4 +45,4 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/bazzite/data/wordpress
+      device: /home/tjun-yu/data/wordpress
