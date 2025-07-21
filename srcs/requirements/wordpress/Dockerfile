@@ -20,8 +20,8 @@ RUN mkdir -p /var/www && \
     rm latest.zip
 
 # copy configs from host
-COPY wp-config.php var/www/wordpress/wp-config.php
-COPY www.conf /etc/php/7.4/fpm/pool.d/www.conf
+COPY conf/wp-config.php var/www/wordpress/wp-config.php
+COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
 # only allows php-fpm to access wordpress/ (php-fpm runs as www-data user)
 RUN chown -R www-data:www-data /var/www/wordpress /run/php /var/log && \

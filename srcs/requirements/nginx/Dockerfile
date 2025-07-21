@@ -11,7 +11,7 @@ RUN mkdir -p /run/nginx
 RUN mkdir -p /var/www/wordpress
 
 # copy config from host
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY conf/nginx.conf /etc/nginx/nginx.conf
 
 # set ownership for runtime directory
 RUN chown -R www-data:www-data /run/nginx /var/lib/nginx /var/log/nginx
