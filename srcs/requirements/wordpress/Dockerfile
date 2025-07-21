@@ -12,15 +12,15 @@ RUN apt-get clean && \
 # runtime directory for process ID files and socket files
 RUN mkdir -p /run/php /var/log
 
-# install wordpress
+# install wordpress (pinned to stable version)
 RUN mkdir -p /var/www && \
     cd /var/www && \
-    wget https://wordpress.org/latest.zip && \
-    unzip latest.zip && \
-    rm latest.zip
+    wget https://wordpress.org/wordpress-6.4.2.zip && \
+    unzip wordpress-6.4.2.zip && \
+    rm wordpress-6.4.2.zip
 
 # copy configs from host
-COPY conf/wp-config.php var/www/wordpress/wp-config.php
+COPY conf/wp-config.php /var/www/wordpress/wp-config.php
 COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
 # only allows php-fpm to access wordpress/ (php-fpm runs as www-data user)
