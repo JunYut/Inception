@@ -26,6 +26,6 @@ RUN chown -R www-data:www-data /run/nginx /var/lib/nginx /var/log/nginx /etc/ngi
 # switch to non-root user for security
 USER www-data
 
-EXPOSE 80 443
+EXPOSE 443
 
 CMD [ "nginx", "-g", "daemon off;" ]
