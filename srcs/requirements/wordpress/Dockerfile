@@ -3,33 +3,37 @@ FROM debian:bullseye
 # install PHP dependencies
 RUN apt update && \
     apt install -y php-fpm php-mysql php-curl php-xml php-mbstring php-zip \
-    php-gd unzip wget
+    php-gd unzip wget netcat
 
 # clean cache and remove package list
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # runtime directory for process ID files and socket files
-RUN mkdir -p /run/php /var/log
+RUN mkdir -p /run/php/ /var/log/
 
-# install wordpress (pinned to stable version)
-RUN mkdir -p /var/www && \
-    cd /var/www && \
-    wget https://wordpress.org/wordpress-6.4.2.zip && \
-    unzip wordpress-6.4.2.zip && \
-    rm wordpress-6.4.2.zip
+# create wordpress directory
+RUN mkdir -p /var/www/wordpress/ && \
+    touch /var/www/wordpress/tmp
 
-# copy configs from host
-COPY conf/wp-config.php /var/www/wordpress/wp-config.php
+# install WP-CLI
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    chmod +x wp-cli.phar && \
+    mv wp-cli.phar /usr/local/bin/wp
+
+# copy config and setup script from host
 COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
+COPY tools/setup.sh /usr/local/bin/setup.sh
+RUN chmod +x /usr/local/bin/setup.sh
 
 # only allows php-fpm to access wordpress/ (php-fpm runs as www-data user)
-RUN chown -R www-data:www-data /var/www/wordpress /run/php /var/log && \
-    chmod -R 755 /var/www/wordpress
+RUN chown -R www-data:www-data /run/php/ /var/log/ /var/www/wordpress/ && \
+    chmod -R 755 /var/www/wordpress/
 
 # switch to non-root user for security
 USER www-data
 
 EXPOSE 9000
 
+ENTRYPOINT [ "/usr/local/bin/setup.sh" ]
 CMD [ "php-fpm7.4", "-F" ]

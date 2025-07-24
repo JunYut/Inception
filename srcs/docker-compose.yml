@@ -24,6 +24,8 @@ services:
       - wordpress_data:/var/www/wordpress
     networks:
       - wpnet
+    env_file:
+      - ./.env
 
   mariadb:
     container_name: mariadb
