@@ -2,7 +2,7 @@ FROM debian:bullseye
 
 # install MariaDB
 RUN apt update && \
-    apt install -y mariadb-server mariadb-client
+    apt install -y mariadb-server mariadb-client gettext-base
 
 # clean cache and remove package list
 RUN apt-get clean && \

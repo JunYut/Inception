@@ -18,8 +18,10 @@ echo "MariaDB is ready!"
 if [ -f '/docker-entrypoint-initdb.d/setup.sql' ] && [ ! -f "/var/lib/mysql/.setup_done" ]; then
     echo 'Running setup.sql...'
 
+    envsubst < /docker-entrypoint-initdb.d/setup.sql > /tmp/setup.sql
+
     # Connect with no username/password (default for fresh MariaDB install)
-    mysql < /docker-entrypoint-initdb.d/setup.sql
+    mysql < /tmp/setup.sql
 
     if [ $? -eq 0 ]; then
         echo 'Setup completed successfully'

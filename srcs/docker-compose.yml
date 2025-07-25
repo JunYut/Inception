@@ -38,6 +38,8 @@ services:
       - mariadb_data:/var/lib/mysql/
     networks:
       - wpnet
+    env_file:
+      - ./.env
 
   redis:
     container_name: redis
