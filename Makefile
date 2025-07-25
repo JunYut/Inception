@@ -49,7 +49,7 @@ clean-images:
 fclean: clean clean-images
 
 # Rebuild everything from scratch
-re: fclean build run
+re: down all
 
 # Show container status
 status:
