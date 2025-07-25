@@ -1,27 +1,28 @@
 services:
   nginx:
     container_name: nginx
-    build: ./requirements/nginx
+    build: ./requirements/nginx/
     image: srcs-nginx
     depends_on:
       - wordpress
     ports:
       - "443:443"
     volumes:
-      - wordpress_data:/var/www/wordpress
+      - wordpress_data:/var/www/wordpress/
     networks:
       - wpnet
 
   wordpress:
     container_name: wordpress
-    build: ./requirements/wordpress
+    build: ./requirements/wordpress/
     image: srcs-wordpress
     depends_on:
       - mariadb
+      - redis
     ports:
       - "9000"
     volumes:
-      - wordpress_data:/var/www/wordpress
+      - wordpress_data:/var/www/wordpress/
     networks:
       - wpnet
     env_file:
@@ -29,12 +30,21 @@ services:
 
   mariadb:
     container_name: mariadb
-    build: ./requirements/mariadb
+    build: ./requirements/mariadb/
     image: srcs-mariadb
     ports:
       - "3306"
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql/
+    networks:
+      - wpnet
+
+  redis:
+    container_name: redis
+    build: ./requirements/bonus/redis/
+    image: srcs-bonus-redis
+    ports:
+      - "6379"
     networks:
       - wpnet
 
@@ -45,7 +55,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/tjun-yu/data/mariadb
+      device: /home/tjun-yu/data/mariadb/
 
   wordpress_data:
     name: wordpress_data
@@ -53,7 +63,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/tjun-yu/data/wordpress
+      device: /home/tjun-yu/data/wordpress/
 
 networks:
   wpnet:

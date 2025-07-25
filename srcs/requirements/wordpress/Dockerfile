@@ -13,7 +13,7 @@ RUN apt-get clean && \
 RUN mkdir -p /run/php/ /var/log/
 
 # create wordpress directory
-RUN mkdir -p /var/www/wordpress/ && \
+RUN mkdir -p /var/www/wordpress/ /var/www/.wp-cli/cache/ && \
     touch /var/www/wordpress/tmp
 
 # install WP-CLI
@@ -27,8 +27,8 @@ COPY tools/setup.sh /usr/local/bin/setup.sh
 RUN chmod +x /usr/local/bin/setup.sh
 
 # only allows php-fpm to access wordpress/ (php-fpm runs as www-data user)
-RUN chown -R www-data:www-data /run/php/ /var/log/ /var/www/wordpress/ && \
-    chmod -R 755 /var/www/wordpress/
+RUN chown -R www-data:www-data /run/php/ /var/log/ /var/www/wordpress/ /var/www/.wp-cli/cache/ && \
+    chmod -R 755 /var/www/
 
 # switch to non-root user for security
 USER www-data

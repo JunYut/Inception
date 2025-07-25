@@ -9,12 +9,12 @@ while ! nc -z mariadb 3306; do
 done
 echo "Database is ready!"
 
-# # wait for Redis to be ready
-# echo "Waiting for Redis to be ready..."
-# while ! redis-cli -h redis ping; do
-#   sleep 1
-# done
-# echo "Redis is ready!"
+# wait for Redis to be ready
+echo "Waiting for Redis to be ready..."
+while ! nc -z redis 6379; do
+  sleep 1
+done
+echo "Redis is ready!"
 
 # setup WordPress
 cd /var/www/wordpress
@@ -32,21 +32,39 @@ if [ ! -f "wp-config.php" ]; then
 
     # create basic wp-config.php
     wp config create \
-        --dbname=$WORDPRESS_DB_NAME \
-        --dbuser=$WORDPRESS_DB_USER \
-        --dbpass=$WORDPRESS_DB_PASSWORD \
-        --dbhost=$WORDPRESS_DB_HOST \
+        --dbname=$WP_DB_NAME \
+        --dbuser=$WP_DB_USER \
+        --dbpass=$WP_DB_PASSWORD \
+        --dbhost=$WP_DB_HOST \
         --allow-root
 
     # set table prefix
-    wp config set table_prefix $WORDPRESS_TABLE_PREFIX --allow-root
+    wp config set table_prefix $WP_TABLE_PREFIX --allow-root
 
-    # # Redis configuration
-    # wp config set WP_CACHE true --allow-root
-    # wp config set WP_REDIS_HOST redis --allow-root
-    # wp config set WP_REDIS_PORT 6379 --allow-root
+    # Redis configuration
+    wp config set WP_CACHE true --raw --allow-root
+    wp config set WP_REDIS_HOST $WP_REDIS_HOST --allow-root
+    wp config set WP_REDIS_PORT $WP_REDIS_PORT --raw --allow-root
+    wp config set WP_REDIS_DATABASE $WP_REDIS_DATABASE --raw --allow-root
+    wp config set WP_REDIS_TIMEOUT $WP_REDIS_TIMEOUT --raw --allow-root
 
     echo "wp-config.php created!"
+else
+    echo "WordPress is already installed."
+fi
+
+# Install WordPress core if not already installed
+if ! wp core is-installed --allow-root; then
+    echo "Installing WordPress..."
+    wp core install \
+        --url=$WP_SITE_URL \
+        --title=$WP_SITE_TITLE \
+        --admin_user=$WP_ADMIN_USER \
+        --admin_password=$WP_ADMIN_PASSWORD \
+        --admin_email=$WP_ADMIN_EMAIL \
+        --skip-email \
+        --allow-root
+    echo "WordPress installed!"
 else
     echo "WordPress is already installed."
 fi
@@ -54,23 +72,25 @@ fi
 # Plugin management
 echo "Managing plugins..."
 
-# # Install and activate Redis Object Cache plugin
-# if ! wp plugin is-installed redis-cache --allow-root; then
-#     echo "Installing Redis Object Cache plugin..."
-#     wp plugin install redis-cache --activate --allow-root
-#     echo "Redis Object Cache plugin installed!"
-# else
-#     echo "Redis Object Cache plugin is already installed."
-# fi
+# Install Redis Object Cache plugin
+if ! wp plugin is-installed redis-cache --allow-root; then
+    echo "Installing Redis Object Cache plugin..."
+    wp plugin install redis-cache --activate --allow-root
+    echo "Redis Object Cache plugin installed!"
+else
+    echo "Redis Object Cache plugin is already installed."
+fi
 
-# # Activate the plugin if not already activated
-# if ! wp plugin is-active redis-cache --allow-root; then
-#     echo "Activating Redis Object Cache plugin..."
-#     wp plugin activate redis-cache --allow-root
-#     echo "Redis Object Cache plugin activated!"
-# else
-#     echo "Redis Object Cache plugin is already active."
-# fi
+# Activate the plugin if not already activated
+if ! wp plugin is-active redis-cache --allow-root; then
+    echo "Activating Redis Object Cache plugin..."
+    wp plugin activate redis-cache --allow-root
+    echo "Redis Object Cache plugin activated!"
+else
+    echo "Redis Object Cache plugin is already active."
+fi
+
+wp redis enable --allow-root
 
 echo "WordPress setup complete!"
 
