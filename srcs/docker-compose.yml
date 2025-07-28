@@ -11,6 +11,7 @@ services:
       - wordpress_data:/var/www/wordpress/
     networks:
       - wpnet
+    restart: on-failure
 
   wordpress:
     container_name: wordpress
@@ -27,6 +28,7 @@ services:
       - wpnet
     env_file:
       - ./.env
+    restart: on-failure
 
   mariadb:
     container_name: mariadb
@@ -40,6 +42,7 @@ services:
       - wpnet
     env_file:
       - ./.env
+    restart: on-failure
 
   redis:
     container_name: redis
@@ -49,6 +52,7 @@ services:
       - "6379"
     networks:
       - wpnet
+    restart: on-failure
 
 volumes:
   mariadb_data:
